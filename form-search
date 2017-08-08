@@ -1,0 +1,35 @@
+/**
+ * Form search class
+ */
+
+class FormSearch {
+    constructor(searchField, table) {
+        this.searchField = searchField;
+        this.table = table;
+        this.rows = table.querySelectorAll('.data-rows');
+    }
+    
+    clear(str) {
+        if (typeof str !== 'string') return console.error(str + ' is not a string');
+        str = str.replace(/<(?:.|\n)*?>/gm, '');
+        return str;
+    }
+    
+    init() {
+        const _thisRows = this.rows;
+        const _this = this;
+        this.searchField.addEventListener('keyup', function(evt) {
+            const _thisValue = this.value;
+            for (let i = 0; i < _thisRows.length; i++) {
+                _thisRows[i].style.display = 'none';
+                const childrens = Array.from(_thisRows[i].children)
+                for (let j = 0; j < childrens.length; j++) {
+                    if (_this.clear(childrens[j].innerHTML).toUpperCase().indexOf(_thisValue.toUpperCase()) > -1) {
+                        _thisRows[i].style.display = 'table-row';
+                    } 
+                }
+            }
+            evt.stopPropagation();
+        }, false);
+    }
+}
